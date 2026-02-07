@@ -23,7 +23,9 @@ class _EditLeadPageState extends State<EditLeadPage> {
 
   Future<void> updateLead() async {
     await dio.put('/leads/${widget.lead.id}', data: {'status': status});
-
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('Lead updated successfully')));
     Navigator.pop(context, true);
   }
 

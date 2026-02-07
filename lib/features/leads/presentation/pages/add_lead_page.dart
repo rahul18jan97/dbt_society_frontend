@@ -17,8 +17,8 @@ class _AddLeadPageState extends State<AddLeadPage> {
   final phoneCtrl = TextEditingController();
 
   bool loading = false;
-
   Future<void> createLead() async {
+    debugPrint('Create Lead Started 👉 ${nameCtrl.text}');
     setState(() => loading = true);
     try {
       await dio.post(
@@ -28,15 +28,17 @@ class _AddLeadPageState extends State<AddLeadPage> {
           'lead_email': emailCtrl.text,
           'lead_phone': phoneCtrl.text,
           'lead_status': 'NEW',
-          'assigned_to': 1,
+
+          // Remove assigned_to - backend gets it from req.user
         },
       );
-
+      debugPrint('Create Lead Success 👉 ${nameCtrl.text}');
       Navigator.pop(context, true);
     } catch (e) {
+      debugPrint('Create Lead Failed 👉 ${nameCtrl.text}: $e');
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(const SnackBar(content: Text('Create failed')));
+      ).showSnackBar(SnackBar(content: Text('Create failed: ${e.toString()}')));
     } finally {
       setState(() => loading = false);
     }
